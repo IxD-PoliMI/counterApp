@@ -12,45 +12,20 @@
   <button onclick="decrement()">Decrement</button>
 
   <script>
-    function updateCounter() {
-      $.ajax({
-        url: '/value',
-        type: 'GET',
-        success: function(response) {
-          $('#counterValue').text(response);
-        },
-        error: function() {
-          console.log('Error occurred while retrieving the counter value');
-        }
-      });
+     function updateCounter() {
+      fetch('/value')
+        .then(response => response.text())
+        .then(data => counterValue.innerText = data);
     }
 
     function increment() {
-      const value = $('#valueInput').val();
-      $.ajax({
-        url: '/inc?n=' + value,
-        type: 'GET',
-        success: function() {
-          updateCounter();
-        },
-        error: function() {
-          console.log('Error occurred while incrementing the counter');
-        }
-      });
+      const value = valueInput.value;
+      fetch(`/inc?n=${value}`).then(updateCounter);
     }
 
     function decrement() {
-      const value = $('#valueInput').val();
-      $.ajax({
-        url: '/dec?n=' + value,
-        type: 'GET',
-        success: function() {
-          updateCounter();
-        },
-        error: function() {
-          console.log('Error occurred while decrementing the counter');
-        }
-      });
+      const value = valueInput.value;
+      fetch(`/dec?n=${value}`).then(updateCounter);
     }
 
     // Initial counter value retrieval
